@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.0
+
+- Added an optional Nuewire runtime dashboard widget.
+
 ## 1.0.1
 
 - Added explicit validation that rejects `::` Livewire aliases, which Livewire 4 interprets as component namespaces before explicit aliases.
