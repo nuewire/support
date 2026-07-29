@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Nuewire\Support\Tests;
 
+use InvalidArgumentException;
 use Nuewire\Support\LivewireComponentRegistrar;
 
 final class LivewireComponentRegistrarTest extends TestCase
@@ -13,10 +14,18 @@ final class LivewireComponentRegistrarTest extends TestCase
         $registry = new FakeLivewireRegistry();
         $this->app->instance('livewire', $registry);
 
-        $registered = app(LivewireComponentRegistrar::class)->register('nuewire::demo', DemoComponent::class);
+        $registered = app(LivewireComponentRegistrar::class)->register('nuewire-demo', DemoComponent::class);
 
         $this->assertTrue($registered);
-        $this->assertSame(DemoComponent::class, $registry->components['nuewire::demo']);
+        $this->assertSame(DemoComponent::class, $registry->components['nuewire-demo']);
+    }
+
+    public function test_it_rejects_double_colon_aliases_that_livewire_four_interprets_as_namespaces(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('is not portable');
+
+        app(LivewireComponentRegistrar::class)->register('nuewire::demo', DemoComponent::class);
     }
 }
 
